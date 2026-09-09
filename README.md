@@ -23,6 +23,13 @@ ANALYTA/
 └── tools/seed/          # standar.csv (691 baris master 2026) + layout_spec.json
 ```
 
+## Cara pakai via link github (simpan ke Sheet)
+
+1. Di editor Apps Script jalankan `setupToken()` sekali → salin kunci dari log.
+2. Deploy > Manage deployments → New version (exec URL tetap sama).
+3. Buka `https://hitographic.github.io/Analyta` → ⚙ Pengaturan → tempel URL `/exec` + kunci → Simpan & Tes.
+4. Input seperti biasa — tersimpan ke tab `LHA`/`LHA_Detail`. Tanpa pengaturan = mode demo (latihan, hilang saat refresh).
+
 ## Cara jalan lokal (coba form tanpa Apps Script)
 
 ```bash

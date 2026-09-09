@@ -32,6 +32,7 @@ npm run test:export  # uji export Excel vs template PDQC-018
 - `frontend/src/lib/lha.js` — `extractNumber`, `hasilToNum`, `microStdToNum`, `flagOf`, `evalStatus`, `kesimpulanOf`, `stdText`.
 - `frontend/src/lib/exportExcel.js` — bangun workbook LHA via ExcelJS.
 - `frontend/src/components/LhaPrint.jsx` + `styles.css` (`@media print`, A4 portrait) — export PDF.
-- `frontend/src/gas.js` — `callGas()` + mock lokal.
+- `frontend/src/gas.js` — `callGas()` 3 mode (gas/http-JSONP/mock) + kunci di localStorage (JANGAN hardcode exec URL/kunci di repo).
+- `frontend/src/data/standarSeed.js` (auto-generated dari `tools/seed/standar.csv`, JANGAN EDIT MANUAL) — fallback 691 master bila Sheet kosong/demo.
 - `appsscript/code.gs` — `doGet`, `setupSheets`, `apiGetStandar/Params/SaveLHA/ListLHA/GetLHA`.
 - `sheet-schema.md`, `tools/seed/standar.csv` (691 baris master).

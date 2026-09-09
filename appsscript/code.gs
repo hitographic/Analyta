@@ -14,6 +14,9 @@
  * 3. Deploy > New deployment > Web app > Execute as: Me, Who has access: sesuai kebutuhan.
  * 4. Isi tab Standar dengan tools/seed/standar.csv (File > Import > Replace),
  *    atau biarkan kosong — form tetap jalan, standar diisi manual per baris.
+ * 5. Agar github.io bisa simpan ke Sheet: jalankan setupToken() sekali (salin kunci
+ *    dari log), Deploy > New version, lalu di github.io buka Pengaturan dan tempel
+ *    EXEC URL + kunci tersebut (tersimpan di browser, tidak ikut ke repo).
  */
 
 const SHEET_ID = '1DhvAd6qLGVKAI9f6NEa59HbM8yn3PiC-nNxh0aTIAfA';
@@ -52,11 +55,76 @@ function setupSheets() {
   if (!hasLha) c.appendRow(['LHA', 0]);
 }
 
-function doGet() {
+/** Buat kunci tulis sekali (jalankan dari editor), lalu salin dari log View > Logs. */
+function setupToken() {
+  const key = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
+  PropertiesService.getScriptProperties().setProperty('API_KEY', key);
+  Logger.log('ANALYTA_API_KEY=' + key);
+  return key;
+}
+
+function apiPing() {
+  return { ok: true, time: new Date().toISOString() };
+}
+
+function apiKey_() {
+  return PropertiesService.getScriptProperties().getProperty('API_KEY') || '';
+}
+
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  if (p.action) return apiHttp_(p);
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('Analyta — Input Hasil Analisa QC')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// ===== HTTP bridge: GitHub Pages (https://hitographic.github.io/Analyta) <-> Sheet =====
+// Browser statis tidak bisa pakai google.script.run, jadi frontend github.io memanggil
+// doGet(?action=...&key=...&callback=...) via JSONP (tag <script>) — bebas masalah CORS.
+// Tanpa `action` perilaku lama tetap: sajikan HTML Index (link /exec).
+// Tanpa kunci yang cocok (bila API_KEY sudah di-set via setupToken) permintaan ditolak.
+function apiHttp_(p) {
+  const cb = String(p.callback || '');
+  const done = (obj) => {
+    const json = JSON.stringify(obj);
+    if (cb && /^[A-Za-z_$][\w$]*$/.test(cb)) {
+      return ContentService.createTextOutput(cb + '(' + json + ');')
+        .setMimeType(ContentService.MimeType.JAVASCRIPT);
+    }
+    return ContentService.createTextOutput(json)
+      .setMimeType(ContentService.MimeType.JSON);
+  };
+  try {
+    const need = apiKey_();
+    if (need && String(p.key || '') !== need) return done({ ok: false, error: 'Kunci salah.' });
+    const a = String(p.action || '');
+    if (a === 'ping') return done({ ok: true, data: apiPing() });
+    if (a === 'getStandar') return done({ ok: true, data: apiGetStandar() });
+    if (a === 'getJenisRM') return done({ ok: true, data: apiGetJenisRM() });
+    if (a === 'getParams') return done({ ok: true, data: apiGetParams(String(p.jenisRM || '')) });
+    if (a === 'listLHA') return done({ ok: true, data: apiListLHA() });
+    if (a === 'getLHA') return done({ ok: true, data: apiGetLHA(String(p.id || '')) });
+    if (a === 'saveLHA') {
+      const payload = JSON.parse(String(p.payload || '{}'));
+      return done({ ok: true, data: apiSaveLHA(payload) });
+    }
+    return done({ ok: false, error: 'Aksi tidak dikenal: ' + a });
+  } catch (err) {
+    return done({ ok: false, error: String((err && err.message) || err) });
+  }
+}
+
+/** Cadangan bila nanti frontend memakai POST JSON {action,key,...}. */
+function doPost(e) {
+  try {
+    const body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    return apiHttp_(body);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ ok: false, error: String((err && err.message) || err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 
 function rows_(name) {

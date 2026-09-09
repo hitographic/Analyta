@@ -1,5 +1,8 @@
 node_modules/
 dist/
+frontend/dist/
+# Hasil build single-file untuk ditempel ke Apps Script (Html "Index").
+# File lokal: frontend/dist/index.html (~1 MB) — jangan di-push ke GitHub.
 .DS_Store
 *.log
 # Operasional lokal (URL exec, catatan akun) — jangan dipush ke repo publik

@@ -1,17 +1,16 @@
 // Wrapper google.script.run -> Promise.
 // Di dalam Apps Script WebApp: pakai google.script.run (ada global `google`).
-// Di `npm run dev` lokal (tanpa Apps Script): pakai MOCK agar form tetap bisa dicoba.
+// Di `npm run dev` lokal / GitHub Pages (tanpa Apps Script): pakai SEED lokal
+// agar form tetap bisa dicoba dengan 691 master Standar 2026.
 // Aktifkan mock dengan ?mock=1 atau otomatis saat `google` tidak ada.
+import { STANDAR_SEED } from './data/standarSeed.js';
 
 const qs = new URLSearchParams(window.location.search);
 export const isMock = qs.get('mock') === '1' || typeof window.google?.script?.run === 'undefined';
 
 const MOCK_DELAY = 150;
-const mockStandar = [
-  { key: 'm 308602|kimia|kadar air (karl fisher)', jenisRM: 'M 308602', jenisAnalisa: 'Kimia', parameter: 'Kadar air (Karl Fisher)', stdMentah: 'Maks. 0,5%', kriteria: 'Maks.', nilai: '0.5', satuan: '%', tipe: 'Maks', smin: '', smax: 0.5, mnum: '', Mnum: '' },
-  { key: 'm 308602|kimia|kemurnian', jenisRM: 'M 308602', jenisAnalisa: 'Kimia', parameter: 'Kemurnian', kriteria: 'Min.', nilai: '99', satuan: '% (db)', tipe: 'Min', smin: 99, smax: '', mnum: '', Mnum: '' },
-  { key: 'm 308602|cemaran logam|pb', jenisRM: 'M 308602', jenisAnalisa: 'Cemaran Logam', parameter: 'Pb', kriteria: 'Maks.', nilai: '2', satuan: 'ppm', tipe: 'Maks', smin: '', smax: 2, mnum: '', Mnum: '' },
-];
+// Master lokal untuk demo (auto-generated dari tools/seed/standar.csv).
+const mockStandar = STANDAR_SEED;
 
 const mockDB = { lha: [], detail: [] };
 

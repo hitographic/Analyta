@@ -6,18 +6,20 @@
 // 3. 'mock' — tanpa keduanya: master lokal 691 baris + DB ingatan browser
 //             (hilang saat refresh, cocok untuk latihan).
 import { STANDAR_SEED } from './data/standarSeed.js';
+import { EXEC_URL, API_KEY } from './config.js';
 
 const LS_URL = 'analyta_exec_url';
 const LS_KEY = 'analyta_api_key';
 
+// Isi Pengaturan (browser) menang atas bawaan; bila kosong dipakai bawaan config.js
+// agar github.io langsung terhubung tanpa設定 apa pun.
 export function getHttpConfig() {
   try {
-    return {
-      url: (localStorage.getItem(LS_URL) || '').trim(),
-      key: (localStorage.getItem(LS_KEY) || '').trim(),
-    };
+    const u = (localStorage.getItem(LS_URL) || '').trim() || EXEC_URL;
+    const k = (localStorage.getItem(LS_KEY) || '').trim() || API_KEY;
+    return { url: u, key: k };
   } catch (e) {
-    return { url: '', key: '' };
+    return { url: EXEC_URL, key: API_KEY };
   }
 }
 
@@ -42,6 +44,9 @@ function inGasFrame() {
 export const isMock = !inGasFrame() && !getHttpConfig().url;
 
 export function getMode() {
+  try {
+    if (new URLSearchParams(window.location.search).get('mock') === '1') return 'mock';
+  } catch (e) { /* abaikan */ }
   if (inGasFrame()) return 'gas';
   if (getHttpConfig().url) return 'http';
   return 'mock';

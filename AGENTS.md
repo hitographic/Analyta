@@ -26,6 +26,8 @@ npm run test:export  # uji export Excel vs template PDQC-018
 4. **Mikro wajib konversi numerik**: `a.b x 10^e` → angka; `103` → `10^3`=1000 (pola `^10[0-9]$`); `1.0 x 104` (tanpa `^`) → 10000; dual `m/M` = 3-class; `M=NA` = single; `Negatif` = kualitatif. Jangan pisah sheet mikro — satu tabel + kolom khusus (`Hasil_num`, `log10`, `m/M`, flag, Status).
 5. **Standar dari master 2026**, kunci lookup BASE `rm|jenis|param` (lowercase, spasi tunggal, tanpa supplier). Param `-` (nama hilang) tidak ada di master → status `Cek Standar`.
 6. **Jangan commit rahasia/URL operasional** (exec URL WebApp, token). Hanya di `docs/LOCAL.md` (gitignored).
+   Pengecualian disengaja atas permintaan owner: `EXEC_URL`/`API_KEY` bawaan di `frontend/src/config.js`
+   agar github.io auto-terhubung (risiko: tulis publik — putar via `setupToken()` bila disalahgunakan).
 7. `dist/` dan `node_modules/` tidak di-commit. Setiap perubahan yang memengaruhi `dist/index.html` WAJIB ingatkan user untuk tempel ulang ke Apps Script + update deployment (file build ≠ source).
 
 ## Peta file penting

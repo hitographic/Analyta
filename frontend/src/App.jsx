@@ -50,10 +50,10 @@ export default function App() {
   const saveSettings = async () => {
     setConnMsg('');
     if (!execUrl.trim()) {
+      // Kosongkan = kembali ke koneksi bawaan (otomatis), bukan demo.
       setHttpConfig('', '');
-      setMode(getMode());
-      setConnMsg('URL dikosongkan — kembali ke mode demo (latihan, tidak tersimpan ke Sheet).');
-      loadData();
+      setConnMsg('Memakai koneksi bawaan ✓ — langsung terhubung ke Sheet.');
+      await loadData();
       return;
     }
     setTesting(true);
@@ -95,16 +95,16 @@ export default function App() {
         {!loading && !err && <span className="pill ok">{standar.length} standar · {jenisList.length} jenis RM</span>}
         {mode === 'gas' && <span className="pill ok">terhubung Sheet (WebApp)</span>}
         {mode === 'http' && <span className="pill ok">terhubung Sheet (github)</span>}
-        {mode === 'mock' && <span className="pill warn">mode demo — isi Pengaturan agar tersimpan ke Sheet</span>}
+        {mode === 'mock' && <span className="pill warn">mode latihan (?mock=1) — tidak tersimpan ke Sheet</span>}
         {seedNote && <span className="pill warn">{seedNote}</span>}
       </div>
 
       <details className="card settings no-print">
         <summary>⚙ Pengaturan koneksi Sheet {mode !== 'mock' ? '(terhubung ✓)' : '(belum terhubung)'}</summary>
         <p className="hint">
-          Agar input dari link github tersimpan ke Google Sheet: di Apps Script jalankan <b>setupToken()</b> sekali
-          (salin kunci dari log), update deployment ke versi terbaru, lalu tempel di bawah.
-          URL & kunci hanya tersimpan di browser ini — tidak ikut ke repo.
+          Link ini <b>sudah terhubung otomatis</b> ke Sheet (koneksi bawaan).
+          Hanya isi di bawah bila URL/kunci diputar: tempel URL /exec + kunci baru,
+          lalu Simpan & Tes. Tambahkan <b>?mock=1</b> di alamat untuk mode latihan.
         </p>
         <div className="grid2">
           <label className="fld">URL WebApp /exec<input value={execUrl} onChange={(e) => setExecUrl(e.target.value)} placeholder="https://script.google.com/macros/s/…/exec" /></label>

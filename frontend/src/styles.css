@@ -1,0 +1,50 @@
+:root { --ink: #111; --accent: #1F4E78; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Times New Roman', Times, serif; color: var(--ink); background: #f2f2f2; }
+.app { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 12px 16px; border-bottom: 3px solid var(--accent); margin-bottom: 16px; }
+.topbar h1 { margin: 0; font-size: 26px; }
+.topbar p { margin: 2px 0 0; font-size: 13px; color: #555; }
+.topbar nav button { margin-left: 8px; padding: 8px 14px; cursor: pointer; }
+.topbar nav button.active { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+.card { background: #fff; padding: 16px; margin-bottom: 16px; border: 1px solid #ddd; }
+.card h2 { margin-top: 0; font-size: 18px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+.grid2 label { display: flex; flex-direction: column; font-size: 13px; }
+.grid2 input { font-family: inherit; font-size: 14px; padding: 6px 8px; }
+.hint { font-size: 13px; color: #555; }
+.error { color: #a00; }
+.msg { background: #eef6ee; border: 1px solid #9c9; padding: 8px; }
+.edittable { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+.edittable th, .edittable td { border: 1px solid #999; padding: 6px 8px; text-align: left; }
+.edittable input, .edittable select { width: 100%; font-family: inherit; font-size: 14px; }
+.badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; white-space: nowrap; }
+.badge.ok { background: #dff0d8; } .badge.warn { background: #fcf8e3; } .badge.bad { background: #f2dede; }
+.actions button { margin-right: 8px; padding: 10px 16px; cursor: pointer; }
+.printbar { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+
+/* ===== Replika Layout PDQC-018 untuk PDF ===== */
+.lha-sheet { background: #fff; color: #000; padding: 18px 22px; font-size: 12pt; }
+.lha-head { display: flex; justify-content: space-between; font-weight: bold; font-size: 12pt; }
+.lha-formcode, .lha-formval { font-size: 12pt; font-weight: bold; }
+.lha-div { text-align: center; font-weight: bold; margin-top: 2px; }
+.lha-title { text-align: center; font-weight: bold; font-size: 14pt; margin: 10px 0 4px; }
+.lha-no { text-align: center; margin-bottom: 8px; }
+.lha-info { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
+.lha-info td { padding: 3px 4px; vertical-align: middle; }
+.lha-info .k { width: 32%; }
+.lha-info .c { width: 3%; }
+.lha-table { width: 100%; border-collapse: collapse; }
+.lha-table th, .lha-table td { border: 1px solid #000; padding: 4px 6px; font-size: 11pt; }
+.lha-table th { text-align: center; }
+.lha-table .no { width: 7%; text-align: center; }
+.lha-foot { margin-top: 8px; }
+.lha-date { margin-top: 6px; }
+.lha-sign { display: flex; justify-content: space-between; margin-top: 6px; text-align: center; }
+@media print {
+  @page { size: A4 portrait; margin: 10mm 5mm 10mm 10mm; }
+  body { background: #fff; }
+  .app { max-width: none; padding: 0; }
+  .no-print { display: none !important; }
+  .lha-sheet { padding: 0; }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "analyta",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Analyta — WebApp input hasil analisa QC (RM/FG) Indofood. Frontend React + backend Google Apps Script, database Google Sheets.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:export": "node test/export.test.js"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.0",
+    "vite-plugin-singlefile": "^2.2.0"
+  }
+}
